@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Find the best time to run from hourly Weather.gov forecast data.">
+    <title>Run Weather Recommender</title>
+    <link rel="stylesheet" href="./css/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="tool-header" aria-labelledby="app-title">
+        <div>
+          <p class="eyebrow">Weather.gov hourly forecast</p>
+          <h1 id="app-title">Run Weather</h1>
+        </div>
+        <div class="header-actions">
+          <label class="select-label" for="days-select">
+            Days
+            <select id="days-select" name="days">
+              <option value="3" selected>3</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+            </select>
+          </label>
+          <label class="toggle-control">
+            <input id="show-all-hours" type="checkbox">
+            <span>All hours</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="location-panel" aria-labelledby="location-title">
+        <div class="panel-heading">
+          <h2 id="location-title">Location</h2>
+          <p id="location-summary" class="muted">Demo location loaded</p>
+        </div>
+
+        <div class="location-controls">
+          <button id="use-location" class="primary-button" type="button">Use my location</button>
+          <button id="refresh-weather" class="secondary-button" type="button">Refresh</button>
+          <label for="latitude-input">
+            Latitude
+            <input id="latitude-input" name="latitude" inputmode="decimal" autocomplete="off">
+          </label>
+          <label for="longitude-input">
+            Longitude
+            <input id="longitude-input" name="longitude" inputmode="decimal" autocomplete="off">
+          </label>
+          <button id="use-manual" class="secondary-button" type="button">Use coordinates</button>
+        </div>
+
+        <div id="status-banner" class="status-banner" role="status" aria-live="polite"></div>
+      </section>
+
+      <details class="method-panel">
+        <summary>Calculations</summary>
+        <div class="method-grid">
+          <p><strong>Dew point</strong> is a temperature, shown in F. Relative humidity is the percentage value.</p>
+          <p><strong>Apparent temperature</strong> uses Weather.gov heat index or wind chill when available. Otherwise the app calculates heat index above 80F and wind chill below 50F.</p>
+          <p><strong>Score</strong> starts at 100, then subtracts penalties for distance from 50F apparent temperature, high dew point, rain probability/QPF, wind, and missing data.</p>
+        </div>
+      </details>
+
+      <section id="best-run" class="best-run" aria-live="polite"></section>
+
+      <section aria-labelledby="days-title">
+        <div class="section-heading">
+          <h2 id="days-title">Best Windows</h2>
+          <p id="forecast-updated" class="muted"></p>
+        </div>
+        <div id="day-cards" class="day-grid"></div>
+      </section>
+
+      <section aria-labelledby="chart-title">
+        <div class="section-heading">
+          <h2 id="chart-title">Score Over Time</h2>
+          <p class="muted">Hourly score from 0 to 100</p>
+        </div>
+        <div id="score-chart" class="score-chart"></div>
+      </section>
+
+      <section aria-labelledby="hourly-title">
+        <div class="section-heading">
+          <h2 id="hourly-title">Hourly Detail</h2>
+          <p class="muted">Chronological forecast rows</p>
+        </div>
+        <div id="hourly-detail" class="hourly-detail"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

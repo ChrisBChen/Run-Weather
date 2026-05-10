@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dwml version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head>
+    <product concise-name="tabular-digital">
+      <creation-date refresh-frequency="PT1H">2026-05-10T08:00:00-04:00</creation-date>
+    </product>
+  </head>
+  <data>
+    <location>
+      <location-key>point1</location-key>
+      <description>Roxbury MA, MA</description>
+    </location>
+    <time-layout time-coordinate="local" summarization="none">
+      <layout-key>k-p1h-n1-0</layout-key>
+      <start-valid-time>2026-05-10T06:00:00-04:00</start-valid-time>
+      <start-valid-time>2026-05-10T07:00:00-04:00</start-valid-time>
+      <start-valid-time>2026-05-10T08:00:00-04:00</start-valid-time>
+      <start-valid-time>2026-05-11T06:00:00-04:00</start-valid-time>
+      <start-valid-time>2026-05-11T07:00:00-04:00</start-valid-time>
+      <start-valid-time>2026-05-12T06:00:00-04:00</start-valid-time>
+    </time-layout>
+    <parameters applicable-location="point1">
+      <temperature type="hourly" time-layout="k-p1h-n1-0">
+        <value>55</value><value>60</value><value>72</value><value>49</value><value>51</value><value>80</value>
+      </temperature>
+      <temperature type="dew point" time-layout="k-p1h-n1-0">
+        <value>44</value><value>48</value><value>65</value><value>36</value><value>38</value><value>71</value>
+      </temperature>
+      <temperature type="heat index" time-layout="k-p1h-n1-0">
+        <value xsi:nil="true"/><value xsi:nil="true"/><value xsi:nil="true"/><value xsi:nil="true"/><value xsi:nil="true"/><value>84</value>
+      </temperature>
+      <temperature type="wind chill" time-layout="k-p1h-n1-0">
+        <value xsi:nil="true"/><value xsi:nil="true"/><value xsi:nil="true"/><value>45</value><value>49</value><value xsi:nil="true"/>
+      </temperature>
+      <probability-of-precipitation type="floating" units="percent" time-layout="k-p1h-n1-0">
+        <value>5</value><value>8</value><value>60</value><value>2</value><value>4</value><value>70</value>
+      </probability-of-precipitation>
+      <cloud-amount type="total" units="percent" time-layout="k-p1h-n1-0">
+        <value>20</value><value>45</value><value>90</value><value>10</value><value>30</value><value>85</value>
+      </cloud-amount>
+      <humidity type="relative" units="percent" time-layout="k-p1h-n1-0">
+        <value>70</value><value>65</value><value>80</value><value>60</value><value>58</value><value>82</value>
+      </humidity>
+      <hourly-qpf type="floating" units="inches" time-layout="k-p1h-n1-0">
+        <value>0</value><value>0</value><value>0.08</value><value>0</value><value>0</value><value>0.12</value>
+      </hourly-qpf>
+      <wind-speed type="sustained" time-layout="k-p1h-n1-0">
+        <value>5</value><value>7</value><value>14</value><value>6</value><value>5</value><value>16</value>
+      </wind-speed>
+      <wind-speed type="gust" time-layout="k-p1h-n1-0">
+        <value xsi:nil="true"/><value xsi:nil="true"/><value>26</value><value xsi:nil="true"/><value xsi:nil="true"/><value>30</value>
+      </wind-speed>
+      <weather time-layout="k-p1h-n1-0">
+        <weather-conditions xsi:nil="true"/>
+        <weather-conditions xsi:nil="true"/>
+        <weather-conditions><value weather-type="rain" coverage="likely"/></weather-conditions>
+        <weather-conditions xsi:nil="true"/>
+        <weather-conditions><value weather-type="rain" coverage="slight chance"/></weather-conditions>
+        <weather-conditions><value weather-type="thunderstorms" coverage="chance"/><value additive="and" weather-type="rain" coverage="likely"/></weather-conditions>
+      </weather>
+    </parameters>
+  </data>
+</dwml>
