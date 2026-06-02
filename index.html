@@ -56,9 +56,10 @@
       <details class="method-panel">
         <summary>Calculations</summary>
         <div class="method-grid">
-          <p><strong>Dew point</strong> is a temperature, shown in F. Relative humidity is the percentage value.</p>
-          <p><strong>Apparent temperature</strong> uses Weather.gov heat index or wind chill when available. Otherwise the app calculates heat index above 80F and wind chill below 50F.</p>
-          <p><strong>Score</strong> starts at 100, then subtracts penalties for distance from 50F apparent temperature, high dew point, rain probability/QPF, wind, and missing data.</p>
+          <p><strong>Dew point</strong> is shown in &deg;F as a moisture and comfort signal. It is not a humidity percentage.</p>
+          <p><strong>Apparent temperature</strong> is displayed from Weather.gov heat index or wind chill when available. Otherwise the app uses the same NWS heat index and wind chill formulas.</p>
+          <p><strong>Estimated WBGT</strong> combines wet-bulb temperature, air temperature, wind, cloud cover, time of day, date, and sun angle. It is an approximation for running conditions, not an official measured WBGT.</p>
+          <p><strong>Score</strong> is roughly 70% thermal comfort, 20% rain, and 10% wind. Heat, severe wind chill, and missing thermal data can cap or reduce the final score.</p>
         </div>
       </details>
 

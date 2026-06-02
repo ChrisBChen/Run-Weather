@@ -390,6 +390,23 @@ h3 {
   color: var(--text);
 }
 
+.score-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.score-breakdown.is-compact {
+  display: inline;
+  margin-top: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .mini-score {
   color: var(--good);
   text-align: right;
@@ -479,6 +496,7 @@ h3 {
   margin-top: 0.6rem;
   color: var(--muted);
   font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .chart-summary strong {
@@ -514,7 +532,7 @@ h3 {
 
 table {
   width: 100%;
-  min-width: 820px;
+  min-width: 1060px;
   border-collapse: collapse;
 }
 
