@@ -21,7 +21,7 @@ export function renderBestRun(element, bestHour) {
       <h2 class="best-title">${escapeHtml(formatDayAndTime(bestHour))}</h2>
       <p class="best-copy">${escapeHtml(summarySentence(bestHour))}</p>
     </div>
-    <div class="score-pill" aria-label="Comfort score ${bestHour.score} out of 100">
+    <div class="score-pill" aria-label="Run suitability score ${bestHour.score} out of 100">
       <strong>${bestHour.score}</strong>
       <span>score</span>
     </div>
@@ -202,10 +202,11 @@ function renderWindow(hour) {
     <li class="run-window">
       <div class="time-block">${escapeHtml(formatHour(hour))}</div>
       <div class="window-metrics">
-        <strong>${formatNumber(hour.apparentTemperature)}F apparent</strong>
-        · ${formatNumber(hour.temperature)}F temp
-        · ${formatNumber(hour.dewPoint)}F dew
+        <strong>${escapeHtml(formatDegrees(hour.scoreParts?.estimatedWbgt))} estimated WBGT</strong>
+        · ${escapeHtml(formatDegrees(hour.apparentTemperature))} apparent
+        · ${escapeHtml(formatDegrees(hour.dewPoint))} dew point comfort
         · ${formatRain(hour)}
+        ${renderScoreBreakdown(hour)}
         <div class="reason-list">
           ${hour.reasons.map((reason) => renderReason(reason)).join("")}
         </div>
@@ -230,9 +231,11 @@ function renderHourGroup(day) {
             <tr>
               <th>Time</th>
               <th>Score</th>
+              <th>Breakdown</th>
+              <th>Est. WBGT</th>
               <th>Apparent</th>
               <th>Temp</th>
-              <th>Dew</th>
+              <th>Dew Point</th>
               <th>Rain</th>
               <th>Wind</th>
               <th>Forecast</th>
@@ -251,9 +254,11 @@ function renderHourRow(hour) {
     <tr>
       <td>${escapeHtml(formatHour(hour))}</td>
       <td class="score-cell">${hour.score}</td>
-      <td>${formatNumber(hour.apparentTemperature)}F</td>
-      <td>${formatNumber(hour.temperature)}F</td>
-      <td>${formatNumber(hour.dewPoint)}F</td>
+      <td>${renderScoreBreakdown(hour, { compact: true })}</td>
+      <td>${escapeHtml(formatDegrees(hour.scoreParts?.estimatedWbgt))}</td>
+      <td>${escapeHtml(formatDegrees(hour.apparentTemperature))}</td>
+      <td>${escapeHtml(formatDegrees(hour.temperature))}</td>
+      <td>${escapeHtml(formatDegrees(hour.dewPoint))}</td>
       <td class="rain-cell">${escapeHtml(formatRain(hour))}</td>
       <td>${escapeHtml(formatWind(hour))}</td>
       <td>${escapeHtml(hour.forecastLabel || "Unavailable")}</td>
@@ -266,12 +271,16 @@ function renderChartReadout(hour) {
   return `
     <strong>${escapeHtml(formatDateKey(hour.dateKey))} ${escapeHtml(formatHour(hour))}</strong>
     · score <strong>${hour.score}</strong>
+    · ${renderScoreBreakdown(hour, { compact: true })}
+    · ${escapeHtml(formatDegrees(hour.scoreParts?.estimatedWbgt))} estimated WBGT
+    · ${escapeHtml(formatConfidence(hour.scoreParts?.confidence))} confidence
     · ${escapeHtml(summarySentence(hour))}
   `;
 }
 
 function chartPointLabel(hour) {
-  return `${formatDateKey(hour.dateKey)} ${formatHour(hour)}, score ${hour.score}, ${summarySentence(hour)}`;
+  const parts = hour.scoreParts || {};
+  return `${formatDateKey(hour.dateKey)} ${formatHour(hour)}, score ${hour.score}, thermal ${formatPartScore(parts.thermalScore)}, rain ${formatPartScore(parts.rainScore)}, wind ${formatPartScore(parts.windScore)}, ${formatDegrees(parts.estimatedWbgt)} estimated WBGT, ${summarySentence(hour)}`;
 }
 
 function renderReason(reason) {
@@ -280,7 +289,7 @@ function renderReason(reason) {
 }
 
 function summarySentence(hour) {
-  return `${formatNumber(hour.apparentTemperature)}F apparent, ${formatNumber(hour.dewPoint)}F dew point, ${formatRain(hour)}, ${formatWind(hour).toLowerCase()}.`;
+  return `${formatDegrees(hour.apparentTemperature)} apparent, ${formatDegrees(hour.dewPoint)} dew point comfort, ${formatRain(hour)}, ${formatWind(hour).toLowerCase()}.`;
 }
 
 function formatDayAndTime(hour) {
@@ -324,8 +333,34 @@ function formatPaceAdjustment(value) {
   return `${(value * 100).toFixed(value < 0.01 ? 2 : 1)}%`;
 }
 
-function formatNumber(value) {
+function renderScoreBreakdown(hour, { compact = false } = {}) {
+  const parts = hour.scoreParts || {};
+  const capText = Number.isFinite(parts.safetyCap) && parts.safetyCap < 100 ? `, cap ${formatPartScore(parts.safetyCap)}` : "";
+  const confidenceText = compact ? "" : `, ${formatConfidence(parts.confidence)} confidence`;
+  const className = compact ? "score-breakdown is-compact" : "score-breakdown";
+
+  return `
+    <span class="${className}">
+      T ${formatPartScore(parts.thermalScore)}
+      · R ${formatPartScore(parts.rainScore)}
+      · W ${formatPartScore(parts.windScore)}${capText}${confidenceText}
+    </span>
+  `;
+}
+
+function formatPartScore(value) {
   return Number.isFinite(value) ? `${Math.round(value)}` : "n/a";
+}
+
+function formatDegrees(value) {
+  return Number.isFinite(value) ? `${Math.round(value)}°F` : "n/a";
+}
+
+function formatConfidence(value) {
+  if (!Number.isFinite(value)) return "unknown";
+  if (value >= 0.9) return "high";
+  if (value >= 0.75) return "medium";
+  return "lower";
 }
 
 function formatCoordinate(value) {

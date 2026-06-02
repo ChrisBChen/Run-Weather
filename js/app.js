@@ -159,6 +159,7 @@ function recalculate({ silent = false } = {}) {
   state.ranked = rankForecast(state.forecast.hours, {
     daysCount: state.daysCount,
     showAllHours: state.showAllHours,
+    latitude: state.location.latitude,
   });
   render();
 
